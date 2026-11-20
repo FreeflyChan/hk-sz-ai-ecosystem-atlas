@@ -33,7 +33,9 @@
     <nav class="topbar-links">
       <a href="#workspace">地图</a>
       <a href="#chain">产业链</a>
-      <a href="#insights">数据视图</a>
+      <a href="#capital">资本视角</a>
+      <a href="#insights">数据</a>
+      <a href="#interview">面试</a>
       <a class="gh" id="ghLink" href="https://github.com/FreeflyChan" target="_blank" rel="noopener">GitHub</a>
     </nav>
   </div>
@@ -55,7 +57,8 @@
       <div class="hero-stats" id="heroStats"></div>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#workspace">打开地图</a>
-        <a class="btn btn-ghost" href="#insights">看数据结论</a>
+        <a class="btn btn-ghost" href="#capital">看投资框架</a>
+        <a class="btn btn-ghost" href="#interview">进面试备战</a>
       </div>
     </div>
   </section>
@@ -137,19 +140,28 @@
       </aside>
 
       <!-- ---------- MAP ---------- -->
+      <div class="map-col">
       <div class="map-panel">
         <div id="map" class="map-canvas" role="application" aria-label="港深 AI 创业公司地图"></div>
 
+        <div class="map-count" id="mapCount" aria-live="polite"></div>
+
         <div class="map-layers" id="layerPanel">
           <div class="layer-head">
-            <span class="filter-label">生态图层</span>
+            <button type="button" class="layer-collapse" id="layerCollapse" aria-expanded="true" aria-controls="layerToggles">
+              <span class="filter-label">生态图层</span>
+              <svg class="caret" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                <path d="M2 3.5 L5 6.5 L8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
             <button type="button" class="linkish" id="resetLayers">恢复</button>
           </div>
           <div class="layers" id="layerToggles"></div>
         </div>
 
         <div class="legend" id="legend"></div>
-        <div class="map-note">坐标按片区近似标注，用于观察聚集关系，不代表精确门牌地址。</div>
+      </div>
+      <div class="map-note">坐标按片区近似标注，用于观察聚集关系，不代表精确门牌地址。</div>
       </div>
 
       <!-- ---------- DETAIL DRAWER ---------- -->
@@ -232,12 +244,57 @@
     </div>
   </section>
 
+  <!-- ================= CAPITAL VIEW ================= -->
+  <section class="container capital-section" id="capital">
+    <div class="section-head">
+      <div>
+        <h2>资本视角：这两个行业怎么投</h2>
+        <p class="section-sub">把行业报告压成一套能复述的框架：处在什么阶段、钱在哪、怎么估值、看什么指标、最怕什么。</p>
+      </div>
+    </div>
+    <div class="capital-grid" id="capitalGrid"></div>
+    <p class="capital-foot">框架来自公开数据与产业链信息整理，用于建立分析思路，不构成投资建议。</p>
+  </section>
+
+  <!-- ================= INTERVIEW ================= -->
+  <section class="container interview-section" id="interview">
+    <div class="section-head">
+      <div>
+        <h2>面试备战：从看懂到讲出来</h2>
+        <p class="section-sub">两段可以直接背的行业概述、十二道高频问题、五个反问，以及四句容易被追问的表述。</p>
+      </div>
+    </div>
+
+    <div class="pitch-grid" id="pitchGrid"></div>
+
+    <div class="qa-panel">
+      <div class="qa-panel-head">
+        <h3>高频问题与答法</h3>
+        <div class="qa-tabs" id="qaTabs"></div>
+      </div>
+      <div class="qa-list" id="qaList"></div>
+    </div>
+
+    <div class="interview-foot">
+      <div class="interview-card">
+        <h3>轮到你提问时</h3>
+        <p class="card-sub">五个问题，既能了解机构，也能说明你真的想过这份工作。</p>
+        <ol class="ask-list" id="askList"></ol>
+      </div>
+      <div class="interview-card">
+        <h3>四句容易减分的话</h3>
+        <p class="card-sub">不是不能说，而是别停在这一句。</p>
+        <div class="avoid-list" id="avoidList"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= DATA VIEWS ================= -->
   <section class="container insights-section" id="insights">
     <div class="section-head">
       <div>
         <h2>数据视图</h2>
-        <p class="section-sub">三张图回答三个问题：钱集中在哪、公司处于什么阶段、两地的资源结构差在哪。</p>
+        <p class="section-sub">五张图回答五个问题：钱集中在哪、公司处于什么阶段、两地资源差在哪、量产节奏、渗透率有多低。</p>
       </div>
     </div>
 
@@ -264,6 +321,24 @@
           <p>香港强在高校与国际资本，深圳强在园区、政策与产业链配套。</p>
         </figcaption>
         <div class="canvas-wrap"><canvas id="chartNodes"></canvas></div>
+      </figure>
+    </div>
+
+    <div class="chart-grid chart-grid-2">
+      <figure class="chart-card">
+        <figcaption>
+          <h3>具身智能：量在涨，价在降</h3>
+          <p>出货量快速抬升，单机物料成本同期从 6 万美元降到 1.5–2 万。降本是放量的前提，也是零部件公司的机会。</p>
+        </figcaption>
+        <div class="canvas-wrap tall"><canvas id="chartEmbodied"></canvas></div>
+      </figure>
+
+      <figure class="chart-card">
+        <figcaption>
+          <h3>AI4S：渗透率只有 3.6%</h3>
+          <p>真正把 AI 用进科研流程的机构不足 4%。这说明机会来自从 0 到 1 的普及，而不是从对手手里抢份额。</p>
+        </figcaption>
+        <div class="canvas-wrap tall"><canvas id="chartPenetration"></canvas></div>
       </figure>
     </div>
 
