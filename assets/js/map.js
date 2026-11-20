@@ -137,6 +137,8 @@
   /* ---------------- 公司列表 ---------------- */
   function renderList(list) {
     $("#listCount").textContent = list.length + " 家公司";
+    var countEl = $("#mapCount");
+    if (countEl) countEl.innerHTML = "当前显示 <b>" + list.length + "</b> 家";
     if (!list.length) {
       $("#companyList").innerHTML = '<p class="list-empty">没有符合条件的公司，试试清除筛选。</p>';
       return;
@@ -168,6 +170,8 @@
       maxZoom: 19
     }).addTo(map);
 
+    L.control.scale({ position: "bottomright", imperial: false, maxWidth: 90 }).addTo(map);
+
     companyLayer = L.markerClusterGroup({
       maxClusterRadius: 44,
       showCoverageOnHover: false,
@@ -195,7 +199,7 @@
         riseOnHover: true,
         title: c.name
       });
-      m.bindTooltip('<b>' + esc(c.name) + "</b><i>" + esc(c.sub) + "</i>", {
+      m.bindTooltip("<b>" + esc(c.name) + "</b><span>" + esc(c.sub) + "</span>", {
         className: "co-tip", direction: "top", offset: [0, -9]
       });
       m.on("click", function () { openDetail(c.id, true); });
@@ -204,6 +208,13 @@
 
     renderNodes();
     fitView("all");
+
+    /* 字体与布局稳定后再校准一次视野，避免首次自适应偏航 */
+    setTimeout(function () {
+      map.invalidateSize();
+      fitView(state.city);
+    }, 260);
+    window.addEventListener("resize", function () { map.invalidateSize(); });
   }
 
   function nodeIcon(type) {
@@ -397,6 +408,18 @@
       if (!btn) return;
       var t = btn.getAttribute("data-type");
       toggleLayer(t, !state.layers[t]);
+    });
+
+    /* 图层面板可收起；小屏默认收起，避免遮挡地图 */
+    var layerPanel = $("#layerPanel");
+    var layerCollapse = $("#layerCollapse");
+    if (window.matchMedia && window.matchMedia("(max-width: 860px)").matches) {
+      layerPanel.classList.add("is-collapsed");
+      layerCollapse.setAttribute("aria-expanded", "false");
+    }
+    layerCollapse.addEventListener("click", function () {
+      var collapsed = layerPanel.classList.toggle("is-collapsed");
+      layerCollapse.setAttribute("aria-expanded", collapsed ? "false" : "true");
     });
 
     $("#resetLayers").addEventListener("click", function () {
