@@ -241,6 +241,14 @@ button { font-family: inherit; font-size: inherit; cursor: pointer; }
 }
 .map-layers .layer-head { display: flex; align-items: center; justify-content: space-between; }
 .map-layers .filter-label { font-size: 10px; margin-bottom: 0; }
+.layer-collapse {
+  display: flex; align-items: center; gap: 5px;
+  border: 0; background: none; padding: 0; color: var(--ink);
+}
+.layer-collapse .filter-label { color: var(--ink); }
+.layer-collapse .caret { color: var(--muted); transition: transform .18s ease; }
+.map-layers.is-collapsed .layers { display: none; }
+.map-layers.is-collapsed .caret { transform: rotate(-90deg); }
 .map-layers .layers { grid-template-columns: 1fr; gap: 1px; margin-top: 6px; }
 .map-layers .layer-toggle {
   border: 0; padding: 5px 6px; font-size: 11.5px; background: transparent; border-radius: 6px;
@@ -292,6 +300,7 @@ button { font-family: inherit; font-size: inherit; cursor: pointer; }
 /* =========================================================
    地图
    ========================================================= */
+.map-col { min-width: 0; display: flex; flex-direction: column; }
 .map-panel { position: relative; height: 760px; min-width: 0; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow-sm); background: #E9EEF4; }
 .map-canvas { height: 100%; width: 100%; z-index: 1; }
 .map-toolbar { display: flex; gap: 3px; background: var(--bg); border-radius: 9px; padding: 3px; border: 1px solid var(--line); }
@@ -372,9 +381,13 @@ button { font-family: inherit; font-size: inherit; cursor: pointer; }
 .legend .k.ring { background: #fff; border: 2px solid var(--investor); }
 .legend .sep { height: 1px; background: var(--line); margin: 2px 0; }
 .map-note {
-  position: absolute; right: 12px; bottom: 12px; z-index: 500;
-  font-size: 10.5px; color: var(--muted); background: rgba(255,255,255,.85);
-  padding: 4px 8px; border-radius: 6px; max-width: 320px; text-align: right;
+  display: flex; align-items: center; gap: 7px;
+  margin-top: 10px; padding-left: 3px;
+  font-size: 11.5px; color: var(--muted); line-height: 1.5;
+}
+.map-note::before {
+  content: ""; flex: none; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--line-strong);
 }
 
 /* =========================================================
@@ -561,7 +574,7 @@ button { font-family: inherit; font-size: inherit; cursor: pointer; }
   .footnote-inner { grid-template-columns: 1fr; gap: 26px; }
   .section-head { flex-direction: column; align-items: flex-start; gap: 14px; }
   .legend { font-size: 10.5px; padding: 8px 10px; }
-  .map-note { display: none; }
+  .map-note { font-size: 10.5px; }
 }
 @media (max-width: 560px) {
   .chain-flow { grid-template-columns: 1fr; }
@@ -569,4 +582,237 @@ button { font-family: inherit; font-size: inherit; cursor: pointer; }
   .chain-flow li::after { display: none; }
   .hero-actions { flex-direction: column; }
   .btn { justify-content: center; }
+}
+
+/* =========================================================
+   资本视角 + 面试备战
+   ========================================================= */
+.capital-section, .interview-section { padding-top: 78px; }
+.capital-foot {
+  margin-top: 14px; font-size: 11.5px; color: var(--muted); line-height: 1.7;
+}
+.section-head h2 { text-wrap: balance; }
+.section-sub { line-height: 1.8; text-wrap: pretty; }
+
+.capital-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.capital-card {
+  position: relative; overflow: hidden; background: #fff;
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: 26px 26px 24px; box-shadow: var(--shadow-xs);
+}
+.capital-card::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--ai4s);
+}
+.capital-card.is-embodied::before { background: var(--embodied); }
+.capital-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.capital-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ai4s);
+}
+.capital-card.is-embodied .capital-label { color: var(--embodied); }
+.capital-stage {
+  font-size: 11px; color: var(--slate); background: var(--bg); border: 1px solid var(--line);
+  padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+}
+.capital-thesis {
+  margin-top: 14px; font-size: 14.5px; line-height: 1.85; color: var(--ink-2);
+}
+.cap-facts {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 20px 0 2px;
+  background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+}
+.cap-fact { background: #fff; padding: 14px 16px 15px; }
+.cap-fact b {
+  display: block; font-size: 21px; line-height: 1.2; letter-spacing: -.02em; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.cap-fact b small { font-size: 12px; font-weight: 500; color: var(--slate); margin-left: 3px; letter-spacing: 0; }
+.cap-fact .k { display: block; margin-top: 5px; font-size: 11.5px; color: var(--slate); }
+.cap-fact .n { display: block; margin-top: 5px; font-size: 10.5px; color: var(--muted); line-height: 1.55; }
+.cap-block { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line); }
+.cap-block h4 {
+  font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); font-weight: 700; margin-bottom: 7px;
+}
+.cap-block p { font-size: 13px; line-height: 1.85; color: var(--ink-2); }
+.cap-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.cap-list li { position: relative; padding-left: 17px; font-size: 12.5px; line-height: 1.7; color: var(--slate); }
+.cap-list li::before {
+  content: ""; position: absolute; left: 2px; top: 8px; width: 5px; height: 5px;
+  border-radius: 50%; background: var(--ai4s); opacity: .6;
+}
+.capital-card.is-embodied .cap-list li::before { background: var(--embodied); }
+.cap-list.is-risk li::before { background: #C2410C; opacity: .75; }
+
+/* 面试：两段概述 */
+.pitch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.pitch-card {
+  position: relative; background: linear-gradient(158deg, #fff 42%, #F6F8FC 100%);
+  border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px 24px 20px;
+}
+.pitch-card .pitch-tag {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ai4s);
+}
+.pitch-card .pitch-tag::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+}
+.pitch-card.is-embodied .pitch-tag { color: var(--embodied); }
+.pitch-card h3 { margin: 9px 0 11px; font-size: 17px; }
+.pitch-card p { font-size: 13.5px; line-height: 1.92; color: var(--ink-2); }
+.pitch-meta {
+  display: flex; gap: 14px; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line);
+  font-size: 10.5px; color: var(--muted);
+}
+
+/* 面试：问答 */
+.qa-panel {
+  margin-top: 20px; background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r-lg); padding: 20px 24px 6px; box-shadow: var(--shadow-xs);
+}
+.qa-panel-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--line);
+}
+.qa-panel-head h3 { font-size: 16px; }
+.qa-tabs { display: flex; gap: 3px; background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 3px; }
+.qa-tabs button {
+  border: 0; background: transparent; color: var(--slate); font-size: 12px;
+  padding: 6px 12px; border-radius: 7px; transition: background .16s, color .16s;
+}
+.qa-tabs button:hover { color: var(--ink); }
+.qa-tabs button.is-active {
+  background: #fff; color: var(--ink); font-weight: 600; box-shadow: var(--shadow-xs);
+}
+.qa-item { border-bottom: 1px solid var(--line); }
+.qa-item:last-child { border-bottom: 0; }
+.qa-q {
+  width: 100%; display: flex; align-items: flex-start; gap: 12px;
+  padding: 15px 2px; border: 0; background: transparent; text-align: left;
+}
+.qa-q:hover strong { color: var(--ai4s); }
+.qa-tag {
+  flex: none; margin-top: 1px; font-size: 10px; font-weight: 700; letter-spacing: .06em;
+  padding: 2px 7px; border-radius: 5px; background: var(--bg); color: var(--slate);
+  border: 1px solid var(--line);
+}
+.qa-tag[data-t="行业"] { color: #1F4FBF; background: rgba(43, 98, 217, .07); border-color: rgba(43, 98, 217, .18); }
+.qa-tag[data-t="公司"] { color: #B8560F; background: rgba(228, 103, 31, .07); border-color: rgba(228, 103, 31, .2); }
+.qa-tag[data-t="估值"] { color: #157A5B; background: rgba(31, 138, 112, .08); border-color: rgba(31, 138, 112, .2); }
+.qa-tag[data-t="港深"] { color: #5B49B8; background: rgba(107, 91, 210, .08); border-color: rgba(107, 91, 210, .2); }
+.qa-tag[data-t="交易"] { color: #8A6A1F; background: rgba(162, 118, 42, .09); border-color: rgba(162, 118, 42, .22); }
+.qa-q strong { flex: 1; font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.6; transition: color .16s; }
+.qa-q .arrow {
+  flex: none; width: 8px; height: 8px; margin: 7px 4px 0 0;
+  border-right: 1.6px solid var(--muted); border-bottom: 1.6px solid var(--muted);
+  transform: rotate(45deg); transition: transform .2s, border-color .2s;
+}
+.qa-item.is-open .qa-q .arrow { transform: rotate(225deg); border-color: var(--ai4s); }
+.qa-a { display: none; padding: 0 0 16px 0; font-size: 13px; line-height: 1.9; color: var(--slate); }
+.qa-a b { color: var(--ink-2); font-weight: 600; }
+.qa-item.is-open .qa-a { display: block; }
+
+/* 面试：反问与避坑 */
+.interview-foot { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+.interview-card {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: 24px; box-shadow: var(--shadow-xs);
+}
+.interview-card h3 { font-size: 16px; }
+.interview-card .card-sub { margin-top: 6px; font-size: 12px; color: var(--muted); line-height: 1.7; }
+.ask-list { counter-reset: ask; list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 11px; }
+.ask-list li {
+  counter-increment: ask; position: relative; padding-left: 30px;
+  font-size: 13px; line-height: 1.7; color: var(--ink-2);
+}
+.ask-list li::before {
+  content: counter(ask, decimal-leading-zero); position: absolute; left: 0; top: 2px;
+  font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: .04em;
+}
+.avoid-row { padding: 12px 0; border-bottom: 1px dashed var(--line); }
+.avoid-row:last-child { border-bottom: 0; padding-bottom: 0; }
+.avoid-bad {
+  font-size: 13px; font-weight: 600; color: #B42318; line-height: 1.6;
+  padding-left: 10px; border-left: 2px solid rgba(180, 35, 24, .35);
+}
+.avoid-why { margin-top: 5px; font-size: 11.5px; color: var(--muted); line-height: 1.65; }
+.avoid-say { margin-top: 4px; font-size: 12.5px; color: var(--ink-2); line-height: 1.7; }
+.avoid-say::before { content: "→ "; color: var(--park); font-weight: 700; }
+
+/* =========================================================
+   数据视图补充
+   ========================================================= */
+.chart-grid-2 { margin-top: 18px; grid-template-columns: repeat(2, 1fr); }
+.canvas-wrap.tall { height: 244px; }
+.chart-card { transition: box-shadow .2s, transform .2s; }
+.chart-card:hover { box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+
+/* =========================================================
+   地图视觉与交互精修
+   ========================================================= */
+.map-panel {
+  border: 1px solid var(--line-strong); border-radius: var(--r-lg);
+  overflow: hidden; box-shadow: 0 10px 30px rgba(11, 27, 43, .07);
+}
+.leaflet-tile-pane { filter: grayscale(.96) saturate(.28) brightness(1.05) contrast(.92); }
+.leaflet-container { background: #EDF0F4; font-family: var(--font); }
+.leaflet-container a.leaflet-popup-close-button { color: var(--slate); }
+
+.map-count {
+  position: absolute; top: 12px; left: 58px; z-index: 520;
+  background: rgba(255, 255, 255, .94); backdrop-filter: blur(8px);
+  border: 1px solid var(--line); border-radius: 8px; padding: 5px 10px;
+  font-size: 11.5px; color: var(--slate); box-shadow: var(--shadow-xs);
+}
+.map-count b { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.leaflet-control-zoom {
+  border: 1px solid var(--line) !important; border-radius: 10px !important;
+  overflow: hidden; box-shadow: var(--shadow-sm) !important;
+}
+.leaflet-control-zoom a {
+  width: 32px !important; height: 32px !important; line-height: 32px !important;
+  color: var(--ink-2) !important; font-size: 17px !important;
+}
+.leaflet-control-zoom a:hover { background: var(--bg) !important; }
+.leaflet-bottom.leaflet-right { bottom: 20px; }
+.leaflet-control-scale-line {
+  border-color: var(--line-strong) !important; color: var(--muted);
+  font-size: 10px; background: rgba(255, 255, 255, .72);
+}
+
+.city-label {
+  font-size: 12px; font-weight: 700; letter-spacing: .34em; text-transform: uppercase;
+  color: rgba(11, 27, 43, .3); pointer-events: none; white-space: nowrap;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+}
+
+.co-pin { display: block; position: relative; box-shadow: 0 1px 4px rgba(11, 27, 43, .38); transition: transform .16s ease, box-shadow .16s ease; }
+.leaflet-marker-icon:hover .co-pin { transform: scale(1.4); box-shadow: 0 3px 10px rgba(11, 27, 43, .4); }
+.co-pin.is-active::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 50%;
+  border: 2px solid currentColor; animation: pinPulse 1.9s ease-out infinite;
+}
+@keyframes pinPulse {
+  0% { transform: scale(.75); opacity: .55; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+.leaflet-tooltip.co-tip {
+  background: rgba(11, 27, 43, .93); color: #fff; border: 0; border-radius: 6px;
+  padding: 5px 9px; font-size: 11.5px; box-shadow: 0 8px 20px rgba(11, 27, 43, .22);
+}
+.leaflet-tooltip.co-tip::before { border-top-color: rgba(11, 27, 43, .93); }
+.co-tip b { font-weight: 600; }
+.co-tip span { color: rgba(255, 255, 255, .66); margin-left: 6px; }
+
+@media (max-width: 1000px) {
+  .capital-grid, .pitch-grid, .interview-foot, .chart-grid-2 { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 860px) {
+  .map-count { display: none; }
+  .qa-panel { padding: 16px 16px 4px; }
+  .qa-tabs { width: 100%; overflow-x: auto; }
+  .qa-q { gap: 9px; }
+  .qa-tag { display: none; }
 }
